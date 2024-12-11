@@ -111,7 +111,7 @@ python -m src.collectors.eia_collector
 ## Contact
 - **Developer**: Nurbolat Balginbayev
 - **LinkedIn**: [LinkedIn Profile](https://linkedin.com/in/nurbabalgin)
-- **GitHub**: [GitHub Profile](https://github.com/Nurba86)
+- **GitHub**: [GitHub Profile](https://github.com/Nurba986)
 
 ## License
 This project is licensed under the MIT License - see the LICENSE file for details.
