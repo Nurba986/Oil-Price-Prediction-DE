@@ -38,44 +38,6 @@ oil_price_prediction/
 └── requirements.txt  # Project dependencies
 ```
 
-## Setup Instructions
-
-### Prerequisites
-- Python 3.8+
-- EIA API key ([Get it here](https://www.eia.gov/opendata/))
-- pip or conda for package management
-
-### Installation Steps
-1. Clone the repository:
-   ```bash
-   git clone [your-repo-url]
-   cd oil_price_prediction
-   ```
-
-2. Set up virtual environment:
-   ```bash
-   python -m venv venv
-   source venv/bin/activate  # On Windows: venv\Scripts\activate
-   ```
-
-3. Install dependencies:
-   ```bash
-   pip install -r requirements.txt
-   ```
-
-4. Configure environment:
-   - Create .env file in root directory
-   - Add your EIA API key:
-     ```
-     EIA_API_KEY=your-api-key-here
-     ```
-
-### Usage
-To collect latest oil price data:
-```bash
-python -m src.collectors.eia_collector
-```
-
 ## Data Pipeline
 
 ### 1. Data Collection
@@ -111,7 +73,6 @@ python -m src.collectors.eia_collector
 ## Contact
 - **Developer**: Nurbolat Balginbayev
 - **LinkedIn**: [LinkedIn Profile](https://linkedin.com/in/nurbabalgin)
-- **GitHub**: [GitHub Profile](https://github.com/Nurba986)
 
 ## License
 This project is licensed under the MIT License - see the LICENSE file for details.
