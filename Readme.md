@@ -1,78 +1,163 @@
 # Oil Price Prediction System
-A data engineering project that demonstrates end-to-end ETL pipeline development using real-world oil price data.
+A data engineering pipeline for oil price analysis and prediction using WTI crude oil data.
 
-## Project Overview
-This project implements a robust data engineering pipeline for collecting, processing, and analyzing WTI crude oil price data. It showcases best practices in data engineering, including API integration, data validation, error handling, and proper project structure.
+## Overview
+This project implements an end-to-end data engineering solution that collects, processes, and analyzes oil price data, featuring API integration, ML modeling, and cloud deployment capabilities.
 
-## Technical Stack
-- **Python** for core implementation
-- **Pandas** for data manipulation
-- **EIA API** for oil price data
-- **Azure Databricks** (planned) for cloud deployment
-- **Azure Data Lake Storage** (planned) for data persistence
+## Getting Started
+### Prerequisites
+- Python 3.8+
+- EIA API key
+- FRED API key
+- Azure account (for cloud deployment)
+- Apache Airflow
 
-## Features
-- Automated data collection from EIA API
-- Daily price tracking and analysis
-- Price change calculations
-- Proper financial data formatting
-- Robust error handling
-- Environment variable management
-- Production-ready code structure
+### Installation
+1. Clone the repository
+```bash
+git clone https://github.com/yourusername/oil-price-prediction.git
+cd oil-price-prediction
+```
+
+2. Create and activate virtual environment
+```bash
+python -m venv venv
+source venv/bin/activate  # On Windows: venv\Scripts\activate
+```
+
+3. Install dependencies
+```bash
+pip install -r requirements.txt
+```
+
+4. Set up environment variables
+```bash
+cp .env.example .env
+# Edit .env with your API keys and configurations
+```
+
+## Project Phases
+
+### Phase 1: Data Collection & Storage
+#### 1. API Integration
+- Get EIA and FRED API keys
+  - Register at EIA website
+  - Set up FRED developer account
+- Create FRED data collector
+  - Implement historical data fetch
+  - Set up incremental updates
+- Create EIA data collector
+  - Configure API endpoints
+  - Implement rate limiting
+- Create EIA scrapper
+- Test collectors with CSV output in data/raw
+  - Validate data completeness
+  - Check API response handling
+
+#### 2. Data Processing
+- Standardize column names and formats
+  - Define naming conventions
+  - Implement data type validation
+- Convert data frequencies
+  - Daily to monthly aggregation
+  - Handle different time zones
+- Validate data quality (initial_exploration)
+  - Identify outliers
+  - Handle missing values
+  - Ensure date consistency
+- Archive and process data
+  - Raw data backup
+  - Generate clean datasets
+
+#### 3. Exploratory Data Analysis
+- Statistical analysis
+- Correlation studies
+- Time series visualization
+- Seasonal pattern analysis
+
+#### 4. Feature Data Processing
+- Feature engineering
+- Data transformation
+- Feature selection analysis
+
+### Phase 2: Machine Learning
+#### 1. Machine Learning Pipeline
+- Feature selection implementation
+  - Correlation analysis
+  - Feature importance ranking
+- Training pipeline setup
+  - Data splitting strategy
+  - Cross-validation setup
+- Model evaluation framework
+  - Metrics definition
+  - Validation procedures
+- Prediction dashboard
+  - Interactive visualizations
+  - Real-time updates
+- Accuracy monitoring
+  - Performance tracking
+  - Model retraining triggers
+
+### Phase 3: Orchestration and Cloud Migration
+#### 1. Orchestration Pipeline
+- Apache Airflow setup
+  - DAG configuration
+  - Task dependencies
+  - Error handling
+  - Scheduling optimization
+
+#### 2. Core Monitoring
+- Alert system implementation
+  - Data freshness monitoring
+  - Pipeline failure detection
+  - Model drift tracking
+  - Resource utilization
+  - Security monitoring
+
+#### 3. Cloud Migration
+- Databricks implementation
+  - Cluster configuration
+  - Performance optimization
+- Data Lake setup
+  - Storage organization
+  - Access controls
+- Security implementation
+  - Authentication
+  - Encryption
+  - Compliance checks
+- Pipeline migration
+  - Testing procedures
+  - Rollback plans
 
 ## Project Structure
 ```
-oil_price_prediction/
+├── data/
+│   ├── archive/         # Archived raw data
+│   ├── processed/       # Cleaned and processed datasets
+│   └── raw/            # Raw data from APIs
+├── notebook/
+│   ├── data_initial_expl.ipynb  # Initial data exploration
+│   └── docs.md                  # Documentation
 ├── src/
-│   ├── collectors/         # Data collection modules
-│   │   └── eia_collector.py
-│   ├── processors/        # Data transformation logic
-│   └── utils/            # Utility functions
-├── tests/                # Unit tests
-├── notebooks/           # Analysis notebooks
-├── data/               # Data storage
-│   ├── raw/           # Raw API data
-│   └── processed/     # Transformed data
-├── config/            # Configuration files
-├── .env              # Environment variables (not in repo)
-└── requirements.txt  # Project dependencies
+│   ├── collectors/     # API data collection scripts
+│   └── processor/      # Data processing modules
+├── venv/              # Virtual environment
+├── .env               # Environment variables
+├── .gitignore         # Git ignore rules
+└── README.md          # Project documentation
 ```
 
-## Data Pipeline
-
-### 1. Data Collection
-- Automated retrieval from EIA API
-- Daily price data extraction
-- Initial data validation
-
-### 2. Data Processing
-- Price change calculations
-- Data cleaning and standardization
-- Statistical analysis
-- Quality assurance checks
-
-### 3. Data Storage
-- Raw data preservation
-- Processed data storage
-- Historical data management
-
 ## Future Enhancements
-- Integration with Azure Databricks
-- Automated scheduling with Azure Data Factory
-- Advanced analytics and ML model development
-- Real-time price monitoring
-- Interactive dashboards
-
-## Development Practices
-- Clean code principles
-- Comprehensive error handling
-- Environment variable management
-- Proper project structure
-- Version control best practices
+- Real-time price prediction updates
+- Advanced feature engineering
+- Integration with additional data sources
+- Enhanced visualization dashboard
+- Automated model retraining
+- Mobile app development
 
 ## Contact
-- **Developer**: Nurbolat Balginbayev
-- **LinkedIn**: [LinkedIn Profile](https://linkedin.com/in/nurbabalgin)
+Developer: Nurbolat Balginbayev
+LinkedIn: [LinkedIn Profile](https://linkedin.com/in/nurbabalgin)
 
 ## License
-This project is licensed under the MIT License - see the LICENSE file for details.
+MIT License

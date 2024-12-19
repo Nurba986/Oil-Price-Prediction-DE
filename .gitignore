@@ -1,26 +1,40 @@
-# Create and add content to .gitignore
-cat > .gitignore << EOL
-# Environment variables
-.env
-
 # Python
 __pycache__/
 *.py[cod]
 *$py.class
+*.so
+.Python
+*.pyc
+
+# Virtual Environment
 venv/
 ENV/
+env/
 
 # IDEs
 .vscode/
 .idea/
+*.swp
+*.swo
 
-# Data
+# Jupyter Notebook
+.ipynb_checkpoints
+*/.ipynb_checkpoints/*
+*.ipynb_checkpoints/*
+
+# Data files
 data/raw/*
 data/processed/*
 !data/raw/.gitkeep
 !data/processed/.gitkeep
 
-# Notebooks
-.ipynb_checkpoints
-*/.ipynb_checkpoints/*
-EOL
+# Environment variables
+.env
+
+# System files
+.DS_Store
+Thumbs.db
+
+# Log files
+*.log
+logs/
