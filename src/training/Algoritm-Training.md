@@ -3,56 +3,34 @@ Make pipeline classes
 Add error handling
 Include logging
 
-# 1. Create Prediction Pipeline:
-## prediction_pipeline.py
-def make_prediction():
-    # Load trained model
-    model = load_model('models/xgboost_best.pkl')
-    
-    # Make prediction
-    future_prediction = model.predict(future_features)
-    
-    # Log results
-    logging.info(f"Prediction for next period: {future_prediction}")
-    
-    # Save/Send results
-    save_predictions(future_prediction)
+# train_model.py
+def load_and_prepare_data():
+    # Load training_data_20241219.csv
+    # Apply scaler_20241219.joblib
+    # Split data (train/test)
+    pass
 
-# 2. Output Options:
+def train_model():
+    # Load best_model_20241219.joblib
+    # Train model - future prediction
+    # Validate performance
+    pass
 
-def handle_results(predictions):
-    # Save to CSV/Database
-    save_to_csv(predictions, 'predictions.csv')
-    
-    # Send email notification
-    send_email(
-        subject="WTI Price Prediction Ready",
-        body=f"Predicted price: ${predictions[0]:.2f}"
-    )
-    
-    # API response
-    return {"predicted_price": predictions[0]}
+def save_results():
+    # Clear old results first
+    clear_old_results()  # Delete old PNGs, metrics files if exist
+    # Save metrics() # New metrics
+    # generate_plots() Generate visualizations(charts/plots), basic charts showing predictions and trends. plt.savefig('plots/prediction_trend.png')
+    # commented for future using API response return {"predicted_price": predictions[0]} not used now, for future
 
+def main():
+    # 1. Load & prepare data
+    data = load_and_prepare_data()    
+    # 2. Train & validate
+    model, metrics = train_model()    
+    # 3. Save everything & visualize
+    save_results()
 
-# 3 Email Notification Content:
+if __name__ == "__main__":
+    main()
 
-Subject: WTI Price Prediction Update
-
-Prediction Details:
-- Forecasted Price: $XX.XX
-- Confidence Level: XX%
-- Prediction Period: Next 12 months
-- Model Performance Metrics: RMSE: XX.XX
-
-Key Insights:
-- Trend Direction: Up/Down
-- Major Factors: [Key Features]
-
-
-ML Preparation Notes:
-
-First 6 months will have NaN values due to rolling window
-Consider dropping first 12 months for consistent training
-Scale features before training (except date)
-Recommended train/test split: by date
-Consider validation set between 2018-2020

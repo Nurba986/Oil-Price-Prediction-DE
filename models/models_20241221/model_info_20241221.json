@@ -1,0 +1,31 @@
+{
+    "feature_names": [
+        "eur_usd",
+        "inventory",
+        "production",
+        "rigs",
+        "inflation",
+        "wti_6m_rolling",
+        "wti_12m_rolling",
+        "wti_6m_lag"
+    ],
+    "best_parameters": {
+        "n_estimators": 868,
+        "max_depth": 3,
+        "learning_rate": 0.021161732831364417,
+        "subsample": 0.6788615380377541,
+        "colsample_bytree": 0.6126946616742115,
+        "min_child_weight": 1,
+        "gamma": 0.0001588537050105878,
+        "reg_alpha": 1.2397752800717688e-05,
+        "reg_lambda": 0.14860800279170966,
+        "random_state": 42
+    },
+    "model_performance": {
+        "rmse": 17.736909680554596,
+        "mae": 14.062174422044592,
+        "da": 67.64705882352942
+    },
+    "training_data": "training_data_20241219.csv",
+    "training_date": "20241221"
+}

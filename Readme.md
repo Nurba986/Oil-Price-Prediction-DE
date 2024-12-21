@@ -82,9 +82,6 @@ cp .env.example .env
 
 ### Phase 2: Machine Learning
 #### 1. Machine Learning Pipeline
-- Feature selection implementation
-  - Correlation analysis
-  - Feature importance ranking
 - Training pipeline setup
   - Data splitting strategy
   - Cross-validation setup
