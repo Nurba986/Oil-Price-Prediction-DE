@@ -1,0 +1,13 @@
+Metrics Report - Generated on 20241223
+
+Training Set Metrics:
+RMSE: 0.14
+MAE: 0.10
+MAPE: 0.16%
+Directional Accuracy: 98.34%
+
+Test Set Metrics:
+RMSE: 13.05
+MAE: 9.91
+MAPE: 11.35%
+Directional Accuracy: 53.33%

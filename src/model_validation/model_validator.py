@@ -23,6 +23,7 @@ class ModelTrainer:
         self.models_dir = 'models'
         self.output_dir = 'results'
         self.plots_dir = os.path.join(self.output_dir, 'plots')
+        self.metrics_dir = os.path.join(self.output_dir, 'metrics')
         
         # Get date stamp (YYYYMMDD only)
         self.datestamp = datetime.now().strftime('%Y%m%d')
@@ -45,6 +46,7 @@ class ModelTrainer:
         
         # Create output directories
         os.makedirs(self.plots_dir, exist_ok=True)
+        os.makedirs(self.metrics_dir, exist_ok=True)
         
         logging.info(f"Initialized ModelTrainer for date: {self.datestamp}")
         logging.info(f"Using model: {self.model_path}")
@@ -154,7 +156,7 @@ class ModelTrainer:
         """Save metrics and generate plots with date stamp."""
         try:
             # Save metrics with datestamp
-            metrics_file = os.path.join(self.output_dir, f'metrics_{self.datestamp}.txt')
+            metrics_file = os.path.join(self.metrics_dir, f'metrics_{self.datestamp}.txt')
             with open(metrics_file, 'w') as f:
                 f.write(f"Metrics Report - Generated on {self.datestamp}\n\n")
                 f.write("Training Set Metrics:\n")
