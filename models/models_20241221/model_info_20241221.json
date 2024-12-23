@@ -10,22 +10,22 @@
         "wti_6m_lag"
     ],
     "best_parameters": {
-        "n_estimators": 868,
-        "max_depth": 3,
-        "learning_rate": 0.021161732831364417,
-        "subsample": 0.6788615380377541,
-        "colsample_bytree": 0.6126946616742115,
+        "n_estimators": 199,
+        "max_depth": 7,
+        "learning_rate": 0.02944213165745618,
+        "subsample": 0.9046697333674689,
+        "colsample_bytree": 0.8532736949658757,
         "min_child_weight": 1,
-        "gamma": 0.0001588537050105878,
-        "reg_alpha": 1.2397752800717688e-05,
-        "reg_lambda": 0.14860800279170966,
+        "gamma": 0.492145503629847,
+        "reg_alpha": 0.004688274193635654,
+        "reg_lambda": 3.2980995523861436e-06,
         "random_state": 42
     },
     "model_performance": {
-        "rmse": 17.736909680554596,
-        "mae": 14.062174422044592,
-        "da": 67.64705882352942
+        "rmse": 14.484649578168273,
+        "mae": 11.991448573406869,
+        "da": 64.86486486486487
     },
-    "training_data": "training_data_20241219.csv",
+    "training_data": "training_data_20241221.csv",
     "training_date": "20241221"
 }

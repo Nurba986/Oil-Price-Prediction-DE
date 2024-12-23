@@ -46,14 +46,15 @@ class DataProcessor:
             'rigs': 'M',      # Monthly
             'refinery': 'M',  # Monthly
             'gdp': 'Q',       # Quarterly
-            'inflation': 'A'   # Annual
+            'inflation': 'M'   # Monthly
         }
 
     def get_latest_file(self, base_name):
         """Find the latest file for a given base name using timestamp in filename."""
-        pattern = f"{base_name}_\\d{{8}}_\\d{{6}}\\.csv$"
+        # Pattern to match YYYYMMDD format
+        pattern = f"{base_name}_\\d{{8}}\\.csv$"
         matching_files = [f for f in self.raw_data_dir.glob(f"{base_name}_*.csv") 
-                         if re.match(pattern, f.name)]
+                        if re.match(pattern, f.name)]
         
         if not matching_files:
             raise FileNotFoundError(f"No matching files found for {base_name}")
@@ -105,12 +106,8 @@ class DataProcessor:
             
         elif freq == 'Q':  # Quarterly to Monthly
             # Interpolate to monthly
-            df = df.resample('M').ffill().interpolate(method='linear')
-            
-            
-        elif freq == 'A':  # Annual to Monthly
-            df = df.resample('M').ffill().interpolate(method='linear')
-            
+            df = df.resample('M').ffill().interpolate(method='linear')          
+          
         # Reset index and ensure date is first of month
         df = df.reset_index()
         df['date'] = df['date'].dt.to_period('M').dt.to_timestamp()
@@ -189,22 +186,30 @@ class DataProcessor:
                 final_df = pd.merge(final_df, df, on='date', how='outer')
                 
             # Filter date range to start from 2005-01-01
-            final_df = final_df[final_df['date'] >= '2005-01-01']
+            final_df = final_df[final_df['date'] >= '2005-01-01'] # Because earliest data in raw files starts from 2005
             
-            # Find the earliest last date among all columns
-            last_dates = {}
+            # Handle missing values
+            # First sort by date to ensure proper forward fill
+            final_df = final_df.sort_values('date')
+            
+            # Forward fill missing values for each column except date
             for column in final_df.columns:
                 if column != 'date':
-                    valid_dates = final_df[~final_df[column].isna()]['date']
-                    if len(valid_dates) > 0:
-                        last_dates[column] = valid_dates.max()
-            
-            earliest_last_date = min(last_dates.values())
-            logger.info(f"Truncating all data to {earliest_last_date}")
-            
-            # Truncate all data to the earliest last date
-            final_df = final_df[final_df['date'] <= earliest_last_date]
-            
+                    # Get current missing value count
+                    missing_before = final_df[column].isnull().sum()
+                    
+                    # Forward fill
+                    final_df[column] = final_df[column].ffill()
+                    
+                    # Get remaining missing value count
+                    missing_after = final_df[column].isnull().sum()
+                    
+                    # Log the changes
+                    if missing_before > 0:
+                        logger.info(f"Column {column}: Filled {missing_before - missing_after} missing values")
+                        if missing_after > 0:
+                            logger.warning(f"Column {column}: Still has {missing_after} missing values at the start of the series")
+           
             # Reorder columns
             column_order = ['date', 'eur_usd', 'inventory', 'production', 'rigs',
                         'refinery_util', 'gdp', 'inflation', 'wti']

@@ -36,7 +36,7 @@ def api_error_handler(func):
 # Saves DataFrame to CSV with timestamp and logging
 def save_to_csv(df, prefix):
     if df is not None and not df.empty:
-        timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
+        timestamp = datetime.now().strftime('%Y%m%d')
         path = f"data/raw/{prefix}_{timestamp}.csv"
         os.makedirs("data/raw", exist_ok=True) # Directory path
         df.to_csv(path, index=False)

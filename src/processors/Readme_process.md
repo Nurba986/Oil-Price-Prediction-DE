@@ -12,20 +12,21 @@ Combines multiple energy market data sources into a single, clean dataset.
 Raw data files located in `data/raw/`:
 
 1. **Daily Frequency**
-   - WTI crude oil prices (`wti_YYYYMMDD_HHMMSS.csv`)
-   - Currency exchange rates (`currency_YYYYMMDD_HHMMSS.csv`)
+   - WTI crude oil prices (`wti_YYYYMMDD.csv`)
+   - Currency exchange rates (`currency_YYYYMMDD.csv`)
 
 2. **Weekly Frequency**
-   - Oil inventory levels (`inventory_YYYYMMDD_HHMMSS.csv`)
+   - Oil inventory levels (`inventory_YYYYMMDD.csv`)
 
 3. **Monthly Frequency**
-   - Oil production (`production_YYYYMMDD_HHMMSS.csv`)
-   - Rig count (`rigs_YYYYMMDD_HHMMSS.csv`)
-   - Refinery utilization (`refinery_YYYYMMDD_HHMMSS.csv`)
+   - Oil production (`production_YYYYMMDD.csv`)
+   - Rig count (`rigs_YYYYMMDD.csv`)
+   - Refinery utilization (`refinery_YYYYMMDD.csv`)
+   - Inflation (`inflation_YYYYMMDD.csv`)
 
 4. **Other Frequencies**
-   - GDP (Quarterly) (`gdp_YYYYMMDD_HHMMSS.csv`)
-   - Inflation (Annual) (`inflation_YYYYMMDD_HHMMSS.csv`)
+   - GDP (Quarterly) (`gdp_YYYYMMDD.csv`)
+
 
 #### Processing Steps
 

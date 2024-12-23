@@ -2,8 +2,6 @@
 A class for collecting economic data from the Federal Reserve Economic Data (FRED) API.
 Fetches important economic indicators:
     - EUR/USD exchange rate (DEXUSEU)
-    - Inflation rate (FPCPITOTLZGUSA)
-    - Drilling activity index (IPN213111N)
     - GDP (GDP)
 
 Requirements:
@@ -28,8 +26,7 @@ class FREDCollector:
         
         self.base_url = "https://api.stlouisfed.org/fred/series/observations"
         self.series = {
-            'currency': 'DEXUSEU',
-            'inflation': 'FPCPITOTLZGUSA',            
+            'currency': 'DEXUSEU',         
             'gdp': 'GDP'
         }
 

@@ -11,11 +11,7 @@ from sklearn.metrics import mean_squared_error, mean_absolute_error, r2_score
 # Configure logging
 logging.basicConfig(
     level=logging.INFO,
-    format='%(asctime)s - %(levelname)s - %(message)s',
-    handlers=[
-        logging.FileHandler('training.log'),
-        logging.StreamHandler()
-    ]
+    format='%(asctime)s - %(levelname)s - %(message)s'
 )
 
 logger = logging.getLogger(__name__)
@@ -178,11 +174,10 @@ class ModelTrainer:
             dates_test = dates[split_idx:]
 
             # Convert dates to datetime if they aren't already
-            dates_            # Generate plots
             split_idx = len(y_train)
-            dates_train = dates[:split_idx]
-            dates_test = dates[split_idx:]train = pd.to_datetime(dates_train)
-            dates_test = pd.to_datetime(dates_test)
+            dates_train = pd.to_datetime(dates[:split_idx])
+            dates_test = pd.to_datetime(dates[split_idx:])
+
 
             # Training predictions plot
             plt.figure(figsize=(12, 6))
@@ -193,9 +188,9 @@ class ModelTrainer:
             plt.ylabel('Price (USD)')
 
             # Format x-axis to show only year and month
-            plt.gca().xaxis.set_major_locator(mdates.YearLocator(2))  # Show every 2 years
+            plt.gca().xaxis.set_major_locator(mdates.YearLocator(1))  # Show every 2 years
             plt.gca().xaxis.set_major_formatter(mdates.DateFormatter('%Y-%m'))
-            plt.xticks(rotation=45, ha='right')  # Rotate and align the tick labels
+            plt.xticks(rotation=0, ha='right')  # Rotate and align the tick labels
             plt.grid(True, alpha=0.3)  # Add light grid
             plt.margins(x=0.02)  # Reduce blank space on sides
             plt.legend(loc='upper right')
@@ -214,7 +209,7 @@ class ModelTrainer:
             # Format x-axis to show only year and month
             plt.gca().xaxis.set_major_locator(mdates.YearLocator(1))  # Show every year for test set
             plt.gca().xaxis.set_major_formatter(mdates.DateFormatter('%Y-%m'))
-            plt.xticks(rotation=45, ha='right')
+            plt.xticks(rotation=0, ha='right')
             plt.grid(True, alpha=0.3)
             plt.margins(x=0.02)
             plt.legend(loc='upper right')
