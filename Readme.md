@@ -34,13 +34,36 @@ Note: "For a visual overview of the data pipeline and processing stages, see flo
 
 ## Project Structure
 ```
-├── data/              # Data storage
-├── notebook/          # Jupyter notebooks
-└── src/               # Source code
-    ├── collectors/    # API collectors
-    ├── processors/    # Data processors
-    └── forecasting/   # ML pipeline
-
+├── data/
+│   └── training_ready/          # Directory for processed training data
+│
+├── models/                      # Directory for model files and artifacts
+│   ├── trained_models/          # Trained model weights and parameters
+│   ├── model_configs/
+│   └── scalers/           
+│
+├── notebook/                    # Jupyter notebooks for experimentation and analysis
+│   ├── init_exploration.ipynb
+│   ├── eda_analysis.ipynb
+│   └── model_training.ipynb
+│
+├── results/                     # Directory for storing model results and evaluations
+│   ├── forecasts/
+│   ├── metrics/
+│   └── plots/
+│
+├── src/                         # Source code directory
+│   ├── collectors/                   
+│   ├── forecasting/
+│   ├── model_validation/
+│   ├── orchestration 
+│   │
+│
+├── .gitignore                 # Git ignore file
+├── Flowcharts.md              # System flowcharts documentation
+├── README.md                  # Project documentation and setup instructions
+├── requirements.txt           # Project dependencies
+└── LICENSE                    # MIT License file
 ```
 
 ## Requirements
@@ -52,5 +75,3 @@ Note: "For a visual overview of the data pipeline and processing stages, see flo
 Developer: Nurbolat Balginbayev  
 LinkedIn: [LinkedIn Profile](https://linkedin.com/in/nurbabalgin)
 
-## License
-MIT License

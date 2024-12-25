@@ -28,7 +28,7 @@ flowchart TD
     end
 
     %% Data flow connections between stages
-    B1 --> |Archive Raw Files|G1[data/raw/archive]
+    С1 --> |Archive Raw Files|G1[data/raw/archive]
     F3 --> |Store Reports|G2[results/forecasts]
 ```
 
