@@ -1,6 +1,8 @@
 # Oil Price Prediction System
 A data engineering pipeline for oil price analysis and prediction using WTI crude oil data.
 
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+
 ## Overview
 End-to-end data engineering solution that collects, processes, and analyzes oil price data, orchestrates and ML modeling.
 
@@ -74,4 +76,5 @@ Note: "For a visual overview of the data pipeline and processing stages, see flo
 ## Contact
 Developer: Nurbolat Balginbayev  
 LinkedIn: [LinkedIn Profile](https://linkedin.com/in/nurbabalgin)
+
 
