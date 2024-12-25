@@ -3,7 +3,33 @@
 ## Overview
 This package contains a set of data collectors for gathering oil price and related economic data from multiple sources. The collectors are designed to fetch data from EIA (Energy Information Administration) and FRED (Federal Reserve Economic Data) APIs, as well as perform web scraping for additional EIA data.
 
-## Components
+## Dataflow Diagram
+```
+EIA API                  FRED API                Web Scraping
+  ↓                        ↓                         ↓
+- WTI Prices      - EUR/USD Rate         - Oil Production
+- Inventory       - GDP                  - Refinery Capacity
+                                         - Rig Count 
+                                         - Inflation   
+  |                        |                         |
+  ↓                        ↓                         ↓
+       CSV Files with Timestamps (data/raw/)
+       - wti_YYYYMMDD.csv 
+       - inventory_YYYYMMDD.csv
+       - currency_YYYYMMDD.csv
+       - inflation_YYYYMMDD.csv
+       - gdp_YYYYMMDD.csv
+       - production_YYYYMMDD.csv
+       - refinery_YYYYMMDD.csv
+       - rigs_YYYYMMDD.csv
+                   ↓
+         Data Processing Pipeline
+                   ↓ 
+      Standardized CSV Output Files
+      (date, value format + validation)
+```
+
+## Pipeline Stages
 
 ### 1. EIA Data Collector (`collector_eia.py`)
 Primary collector for oil and petroleum data from the EIA API.
@@ -129,9 +155,5 @@ All collectors output CSV files with a standardized format:
 - FRED API updates frequency varies by dataset
 - Web scraping may break if EIA website structure changes
 
-## Contributing
-1. Fork the repository
-2. Create a feature branch
-3. Add tests for new functionality
-4. Submit a pull request
+
 

@@ -1,0 +1,32 @@
+{
+    "current_wti": 69.57818181818182,
+    "forecasts": [
+        {
+            "forecast_date": "2025-01-01",
+            "predicted_price": 66.40168762207031,
+            "confidence_interval": {
+                "lower": 46.32374469272847,
+                "upper": 86.47963055141216
+            },
+            "confidence": 100.0
+        },
+        {
+            "forecast_date": "2025-02-01",
+            "predicted_price": 66.40168762207031,
+            "confidence_interval": {
+                "lower": 51.93693303856597,
+                "upper": 80.86644220557466
+            },
+            "confidence": 85.0
+        },
+        {
+            "forecast_date": "2025-03-01",
+            "predicted_price": 66.40168762207031,
+            "confidence_interval": {
+                "lower": 51.93693303856597,
+                "upper": 80.86644220557466
+            },
+            "confidence": 70.0
+        }
+    ]
+}
