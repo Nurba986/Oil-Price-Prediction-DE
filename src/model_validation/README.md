@@ -28,3 +28,7 @@ Validates WTI oil price prediction model and generates performance metrics.
 1. Check training.log for errors
 2. Review metrics file
 3. Inspect prediction plots
+
+
+## Model Performance 
+XGBoost model achieving 63% directional accuracy in price movement predictions
