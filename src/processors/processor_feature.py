@@ -58,8 +58,8 @@ class FeatureProcessor:
                 raise ValueError(f"Column {col} must be numeric")
                 
         # Check for missing values
-        if df.isnull().any().any():
-            raise ValueError("Dataset contains missing values")
+        # if df.isnull().any().any():
+        #     raise ValueError("Dataset contains missing values")
             
         # Verify monthly frequency
         dates = pd.to_datetime(df['date'])

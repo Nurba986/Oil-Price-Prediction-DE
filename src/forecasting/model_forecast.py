@@ -32,9 +32,6 @@ class WTIForecaster:
         # Define confidence decay parameters
         self.base_confidence = 0.8  # 80% base confidence
         self.confidence_decay = 0.15  # 15% decay per month
-        
-        # Define forecast horizons (in months)
-        self.forecast_horizons = [1, 2, 3]  # 1-3 months ahead
 
     def _get_project_root(self):
         """Get the project root directory."""
@@ -133,7 +130,7 @@ class WTIForecaster:
         return z_score[closest_conf] * std_dev
 
     def generate_forecast(self):
-        """Generate WTI price forecasts for the next 3 months."""
+        """Generate WTI price forecasts for the next 1 month."""
         try:
             # Load latest model and data
             current_data = self._load_latest_training_data()
@@ -145,49 +142,29 @@ class WTIForecaster:
             forecast_features = self._prepare_features(current_data)
             X_forecast = self.scaler.transform(forecast_features.iloc[-1:])
             
-            # Make prediction for next 3 months
-            predictions = []
-            confidence_intervals = {'lower': [], 'upper': []}
+            # Make prediction
+            prediction = float(self.model.predict(X_forecast)[0])
             
-            for i in range(3):  # Generate 3 months of forecasts
-                pred = self.model.predict(X_forecast)[0]
-                predictions.append(float(pred))  # Convert to float for JSON serialization
-                
-                # Calculate confidence score and intervals
-                confidence = self._calculate_confidence(i + 1)  # Decreasing confidence for further months
-                std_dev = current_data['wti'].std()
-                error_margin = self._calculate_error_margin(confidence, std_dev)
-                
-                confidence_intervals['lower'].append(float(pred - error_margin))
-                confidence_intervals['upper'].append(float(pred + error_margin))
-                
-                # Update features for next prediction
-                # You might want to update relevant features here
+            # Calculate confidence interval
+            std_dev = current_data['wti'].std()
+            error_margin = 1.28 * std_dev  # For 80% confidence
             
-            # Generate forecast dates
+            # Generate forecast date
             last_date = pd.to_datetime(current_data['date'].iloc[-1])
-            forecast_dates = [(last_date + pd.DateOffset(months=i+1)).strftime('%Y-%m-%d') 
-                            for i in range(3)]
+            forecast_date = (last_date + pd.DateOffset(months=1)).strftime('%Y-%m-%d')
             
             # Prepare results
             forecast_results = {
                 'current_wti': float(current_wti),
-                'forecasts': [
-                    {
-                        'forecast_date': date,
-                        'predicted_price': pred,
-                        'confidence_interval': {
-                            'lower': low,
-                            'upper': high
-                        },
-                        'confidence': (1 - (i * 0.15)) * 100  # Decreasing confidence: 80%, 65%, 50%
-                    }
-                    for i, (date, pred, low, high) in enumerate(zip(
-                        forecast_dates, predictions,
-                        confidence_intervals['lower'],
-                        confidence_intervals['upper']
-                    ))
-                ]
+                'forecast': {
+                    'forecast_date': forecast_date,
+                    'predicted_price': prediction,
+                    'confidence_interval': {
+                        'lower': float(prediction - error_margin),
+                        'upper': float(prediction + error_margin)
+                    },
+                    'confidence': 80.0
+                }
             }
             
             # Save results
@@ -197,7 +174,7 @@ class WTIForecaster:
             with open(output_file, 'w') as f:
                 json.dump(forecast_results, f, indent=4)
                 
-            logger.info(f"Generated and saved 3-month forecasts to {output_file}")
+            logger.info(f"Generated and saved 1-month forecasts to {output_file}")
             return forecast_results
             
         except Exception as e:
@@ -207,16 +184,16 @@ class WTIForecaster:
 if __name__ == "__main__":
     try:
         forecaster = WTIForecaster()
-        forecasts = forecaster.generate_forecast()
+        forecast = forecaster.generate_forecast()
         
         # Print forecasts
-        print("\nWTI Price Forecasts:")
-        print(f"Current Price: ${forecasts['current_wti']}")
-        print("\nForecasts:")
-        for f in forecasts['forecasts']:
-            print(f"Date: {f['forecast_date']}")
-            print(f"Price: ${f['predicted_price']:.2f} (${f['confidence_interval']['lower']:.2f} - ${f['confidence_interval']['upper']:.2f})")
-            print(f"Confidence: {f['confidence']:.1f}%\n")
+        print("\nWTI Price Forecast:")
+        print(f"Current Price: ${forecast['current_wti']:.2f}")
+        print("\nOne Month Forecast:")
+        f = forecast['forecast']
+        print(f"Date: {f['forecast_date']}")
+        print(f"Price: ${f['predicted_price']:.2f} (${f['confidence_interval']['lower']:.2f} - ${f['confidence_interval']['upper']:.2f})")
+        print(f"Confidence: {f['confidence']}%")
             
     except Exception as e:
         logger.error(f"Forecasting pipeline failed: {str(e)}")

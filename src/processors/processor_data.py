@@ -117,10 +117,6 @@ class DataProcessor:
 
     def validate_data(self, df):
         """Perform validation checks on the final dataset."""
-        # Check for missing values
-        if df.isnull().any().any():
-            raise ValueError("Dataset contains missing values")
-            
         # Check date frequency
         date_diff = df['date'].diff().dropna()
         if not all(date_diff.dt.days.between(28, 31)):

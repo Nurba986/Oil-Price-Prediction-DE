@@ -3,11 +3,8 @@ import json
 import smtplib
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
-from email.mime.image import MIMEImage
 from datetime import datetime
 from pathlib import Path
-import matplotlib.pyplot as plt
-import pandas as pd
 import logging
 
 # Configure logging
@@ -22,8 +19,6 @@ class NotificationHandler:
         """Initialize notification handler."""
         self.project_root = self._get_project_root()
         self.forecasts_dir = self.project_root / 'results' / 'forecasts'
-        self.plots_dir = self.project_root / 'results' / 'plots'
-        self.plots_dir.mkdir(parents=True, exist_ok=True)
         
         # Email configuration
         self.sender_email = os.getenv('SENDER_EMAIL')
@@ -60,50 +55,10 @@ class NotificationHandler:
             logger.error(f"Error loading forecast data: {str(e)}")
             raise
 
-    def _create_forecast_plot(self, forecast_data):
-        """Create forecast visualization plot."""
-        try:
-            # Extract data
-            dates = [f['forecast_date'] for f in forecast_data['forecasts']]
-            prices = [f['predicted_price'] for f in forecast_data['forecasts']]
-            lower_bounds = [f['confidence_interval']['lower'] for f in forecast_data['forecasts']]
-            upper_bounds = [f['confidence_interval']['upper'] for f in forecast_data['forecasts']]
-            
-            # Create plot
-            plt.figure(figsize=(8, 6))
-            
-            # Plot predicted prices
-            plt.plot(dates, prices, marker='o', label='Predicted Price')
-            
-            # Plot confidence intervals
-            plt.fill_between(dates, lower_bounds, upper_bounds, alpha=0.2, label='Confidence Interval')
-            
-            # Add current price point
-            plt.scatter(dates[0], forecast_data['current_wti'], color='red', marker='*', 
-                      s=150, label='Current Price')
-            
-            # Customize plot
-            plt.title('WTI Price Forecast with Confidence Intervals')
-            plt.xlabel('Date')
-            plt.ylabel('Price (USD)')
-            plt.xticks(rotation=0)
-            plt.grid(True, alpha=0.3)
-            plt.legend()
-            
-            # Save plot
-            plot_path = self.plots_dir / f'forecast_plot_{datetime.now().strftime("%Y%m%d")}.png'
-            plt.savefig(plot_path, bbox_inches='tight', dpi=300)
-            plt.close()
-            
-            logger.info(f"Created forecast plot at {plot_path}")
-            return plot_path
-            
-        except Exception as e:
-            logger.error(f"Error creating forecast plot: {str(e)}")
-            raise
-
     def _create_email_content(self, forecast_data):
         """Create HTML email content with forecast data."""
+        forecast = forecast_data['forecast']
+        
         html_content = f"""
         <html>
         <head>
@@ -148,26 +103,16 @@ class NotificationHandler:
                     <th>Range</th>
                     <th>Confidence</th>
                 </tr>
-        """
-        
-        # Add forecast rows
-        for forecast in forecast_data['forecasts']:
-            html_content += f"""
                 <tr>
                     <td>{forecast['forecast_date']}</td>
                     <td>${forecast['predicted_price']:.2f}</td>
                     <td>${forecast['confidence_interval']['lower']:.2f} - ${forecast['confidence_interval']['upper']:.2f}</td>
                     <td>{forecast['confidence']:.1f}%</td>
                 </tr>
-            """
-            
-        html_content += """
             </table>
-            <p>* Forecast chart attached below</p>
         </body>
         </html>
         """
-        
         return html_content
 
     def send_notification(self):
@@ -180,11 +125,8 @@ class NotificationHandler:
             # Get forecast data
             forecast_data = self._get_latest_forecast()
             
-            # Create visualization
-            plot_path = self._create_forecast_plot(forecast_data)
-            
             # Create email message
-            msg = MIMEMultipart('related')
+            msg = MIMEMultipart('alternative')
             msg['Subject'] = "WTI Price Prediction Update"
             msg['From'] = self.sender_email
             msg['To'] = self.recipient_email
@@ -192,12 +134,6 @@ class NotificationHandler:
             # Add HTML content
             html_content = self._create_email_content(forecast_data)
             msg.attach(MIMEText(html_content, 'html'))
-            
-            # Add plot image
-            with open(plot_path, 'rb') as f:
-                img = MIMEImage(f.read())
-                img.add_header('Content-ID', '<forecast_plot>')
-                msg.attach(img)
             
             # Send email
             with smtplib.SMTP(self.smtp_server, self.smtp_port) as server:
@@ -212,15 +148,6 @@ class NotificationHandler:
                     
             logger.info(f"Successfully sent forecast notification email to {self.recipient_email}")
                 
-        except smtplib.SMTPAuthenticationError:
-            logger.error("Failed to authenticate with SMTP server. Please check your email credentials.")
-            raise
-        except smtplib.SMTPRecipientsRefused as e:
-            logger.error(f"Failed to send email - recipient refused: {str(e)}")
-            raise
-        except ValueError as ve:
-            logger.error(f"Configuration error: {str(ve)}")
-            raise
         except Exception as e:
             logger.error(f"Error sending notification: {str(e)}")
             raise
